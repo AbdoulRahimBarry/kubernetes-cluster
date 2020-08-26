@@ -1,0 +1,155 @@
+# Installation docker Requiement
+
+- name: Docker curl
+  shell: curl -fsSL https://get.docker.com -o get-docker.sh
+  args:
+    warn: no
+
+- name: Docker get
+  shell: sh get-docker.sh
+  args:
+    warn: no
+
+- name: Docker curl -fsSL
+  shell: curl -fsSL https://test.docker.com -o test-docker.sh
+  args:
+    warn: no
+
+- name: Docker sh test
+  shell: sh test-docker.sh
+  args:
+    warn: no
+
+- name: Docker add usermod
+  shell: usermod -aG docker centos
+  args:
+    warn: no
+
+- name: Docker enable
+  shell: systemctl enable docker
+  args:
+    warn: no
+
+- name: Docker restart
+  shell: systemctl start docker
+  args:
+    warn: no
+
+# Install k8s
+
+# Etape 1
+- name: Configure Kubernetes Repository
+  shell: cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+         [kubernetes]
+         name=Kubernetes
+         baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+         enabled=1
+         gpgcheck=1
+         repo_gpgcheck=1
+         gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+         EOF
+  args:
+    warn: no
+
+# Etape 2
+- name: Install kubelet, kubeadm, and kubectl
+  shell: sudo yum install -y kubelet kubeadm kubectl
+  args:
+    warn: no
+
+- name: Enable kubelet
+  shell: systemctl enable kubelet
+  args:
+    warn: no
+
+- name: Start kubelet
+  shell: systemctl start kubelet
+  args:
+    warn: no
+
+# Etape 3
+- name: Set Hostname on Nodes
+  shell: sudo hostnamectl set-hostname master-node
+  args:
+    warn: no
+
+- name: Resolve the hostname master nodes
+  shell: sudo echo "{{ master_ip }} {{ master_name }}" >> /etc/hosts
+  args:
+    warn: no
+
+- name: Resolve the hostname worker-nodes
+  shell: sudo echo "{{ worker_ip }} {{ worker_name }}" >> /etc/hosts
+  args:
+    warn: no
+
+# Etape 5
+- name: Update Iptables Settings
+  shell: cat <<EOF > /etc/sysctl.d/k8s.conf
+         net.bridge.bridge-nf-call-ip6tables = 1
+         net.bridge.bridge-nf-call-iptables = 1
+         EOF
+         sysctl --system
+  args:
+    warn: no
+
+# Etape 6
+- name: Disable SELinux
+  shell: sudo setenforce 0
+  args:
+    warn: no
+
+- name: Disable SELinux
+  shell: sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+  args:
+    warn: no
+
+# Etape 7
+- name: Disable SWAP
+  shell: sudo sed -i '/swap/d' /etc/fstab
+  args:
+    warn: no
+
+- name: Disable SWAP
+  shell: sudo swapoff -a
+  args:
+    warn: no
+
+# How to Deploy a Kubernetes Cluster
+#  Etape 1
+- name: Create Cluster with kubeadm
+  shell: sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+  args:
+    warn: no
+
+# Etape 2
+- name: Manage Cluster as Regular User
+  shell: mkdir -p $HOME/.kube
+  args:
+    warn: no
+
+- name: Create Cluster with kubeadm
+  shell: sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  args:
+    warn: no
+
+- name: Create Cluster with kubeadm
+  shell: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  args:
+    warn: no
+
+# Etape 3
+- name: configurer le réseau de pods
+  shell: sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  args:
+    warn: no
+
+- firewalld:
+    port: 8285/tcp
+    permanent: yes
+    state: enabled
+
+- firewalld:
+    port: 6443/tcp
+    permanent: yes
+    state: enabled
