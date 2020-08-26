@@ -6,3 +6,6 @@ master_ip: '35.175.172.2'
 
 master_name: 'master.phoenixnap.com master-node'
 #worker_name: 'node1. phoenixnap.com node1 worker-node'
+
+house: '/home/centos'
+token: 'token.sh'
