@@ -1,5 +1,5 @@
 ---
 # vars file for k8s-roles
-master-node: '3.236.241.243'
-worker-node: '3.92.92.28'
+master_node: '3.236.241.243'
+worker_node: '3.92.92.28'
 house: /home/centos/

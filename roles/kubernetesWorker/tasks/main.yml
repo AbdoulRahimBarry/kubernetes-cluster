@@ -28,10 +28,7 @@
     state: installed
 
 - name: enable kubectl
-  systemd:
-    name: kubectl
-    state: started
-    enabled: yes
+  shell: systemctl enable kubelet
 
 - name: Start service kubelet
   service:
@@ -43,8 +40,10 @@
 
 - name: Template Resolve the hostname master nodes
   template:
-    src: /roles/kubernetesMaster/templates/hostname.j2
+    src: roles/kubernetesMaster/templates/hostname.j2
     dest: /etc/hosts
+    owner: centos
+    remote_src: no
 
 - name: Configure Firewall
   firewalld:
