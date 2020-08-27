@@ -1,0 +1,53 @@
+- name: Deploy k8s kubernetes Master Node
+  hosts: kubernetesMasterNode
+  gather_facts: true
+  become: true
+
+  vars:
+    pip_install_packages:
+      - name: docker
+
+    pip_package: python-pip
+    pip_executable: pip
+
+  pre_tasks:
+    - block:
+      - name: Install EPEL repo
+        package: name=epel-release state=present
+        when: ansible_distribution == "CentOS"
+
+      - name: install python-pip
+        package: name=python-pip state=present update_cache=yes
+
+  roles:
+    - { role: geerlingguy.pip }
+    - { role: geerlingguy.docker }
+    - { role: kubernetesMaster }
+
+
+- name: Deploy kubernetes Worker Node
+  hosts: kubernetesWorkerNode
+  gather_facts: true
+  become: true
+
+  vars:
+    pip_install_packages:
+      - name: docker
+
+    pip_package: python-pip
+    pip_executable: pip
+
+  pre_tasks:
+    - block:
+      - name: Install EPEL repo
+        package: name=epel-release state=present
+        when: ansible_distribution == "CentOS"
+
+      - name: install python-pip
+        package: name=python-pip state=present update_cache=yes  
+
+  roles:
+    - { role: geerlingguy.pip }
+    - { role: geerlingguy.docker }
+    - { role: kubernetesWorker }
+

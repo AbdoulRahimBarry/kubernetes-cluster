@@ -1,0 +1,8 @@
+---
+# vars file for worker-roles
+
+master_ip: '3.235.181.96'
+worker_ip: '3.227.249.239'
+
+master_name: 'master.phoenixnap.com master-node'
+worker_name: 'node1. phoenixnap.com node1 worker-node1'

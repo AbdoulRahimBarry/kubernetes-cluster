@@ -1,0 +1,5 @@
+# installation python via geerlingguy role
+- src: geerlingguy.pip
+
+# installation docker via geerlingguy role
+- src: geerlingguy.docker
