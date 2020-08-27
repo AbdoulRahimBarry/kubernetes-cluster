@@ -41,11 +41,10 @@
 - name: Set Hostname Worker Nodes
   shell: sudo hostnamectl set-hostname worker-node1
 
-- name: Resolve the hostname master nodes
-  shell: sudo echo "{{ master_ip }} {{ master_name }}" >> /etc/hosts
-
-- name: Resolve the hostname worker-nodes
-  shell: sudo echo "{{ worker_ip }} {{ worker_name }}" >> /etc/hosts
+- name: Template Resolve the hostname master nodes
+  template:
+    src: /roles/kubernetesMaster/templates/hostname.j2
+    dest: /etc/hosts
 
 - name: Configure Firewall
   firewalld:

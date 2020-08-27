@@ -41,11 +41,10 @@
 - name: Set Hostname Master Nodes
   shell: sudo hostnamectl set-hostname master-node
 
-- name: Resolve the hostname master nodes
-  shell: sudo echo "{{ master_ip }} {{ master_name }}" >> /etc/hosts
-
-- name: Resolve the hostname worker-nodes
-  shell: sudo echo "{{ worker_ip }} {{ worker_name }}" >> /etc/hosts
+- name: Template Resolve the hostname master nodes
+  template:
+    src: /roles/kubernetesMaster/templates/hostname.j2
+    dest: /etc/hosts
 
 - name: Configure Firewall
   firewalld:
@@ -81,10 +80,10 @@
   shell: sudo swapoff -a
 
 - name: Create file token.sh
-  shell: touch {{ house }}/{{ token }}
+  shell: touch {{ house }}/token.sh
 
 - name: Generate token kubeadm
-  shell: sudo kubeadm init --pod-network-cidr=10.244.0.0/16 >> "{{ house }}/{{ token }}"
+  shell: sudo kubeadm init --pod-network-cidr=10.244.0.0/16 >> "{{ house }}/token.sh"
   ignore_errors: yes
 
 - name:  Create folder 

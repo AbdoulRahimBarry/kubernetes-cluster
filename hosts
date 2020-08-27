@@ -1,5 +1,5 @@
 [kubernetesMasterNode]
-3.235.181.96 ansible_user=centos ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+3.236.241.243 ansible_user=centos ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [kubernetesWorkerNode]
-3.227.249.239 ansible_user=centos ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+3.92.92.28 ansible_user=centos ansible_ssh_common_args='-o StrictHostKeyChecking=no'
