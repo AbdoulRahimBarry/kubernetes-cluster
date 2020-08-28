@@ -21,9 +21,9 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 
 Example Playbook
 ----------------
-If you want user my playbook (kubernetes-playbook.yml), install ansible, git clone the projet and execute:
-ansible-galaxy install -r requirement
-ansible-playbook -i hosts --private-key vars/devops.pem kubernetes-playbook.yml --aks-vault-pass
+If you want user my playbook (kubernetes-playbook.yml), install ansible, git clone the projet and execute:  
+ansible-galaxy install -r requirement  
+ansible-playbook -i hosts --private-key vars/devops.pem kubernetes-playbook.yml --aks-vault-pass  
 
 Or directly used my roles
 
