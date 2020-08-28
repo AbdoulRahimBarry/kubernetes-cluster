@@ -23,7 +23,9 @@ Example Playbook
 ----------------
 If you want user my playbook (kubernetes-playbook.yml), install ansible, git clone the projet and execute:
 ansible-galaxy install -r requirement
-ansible-playbook -i host 
+ansible-playbook -i hosts --private-key vars/devops.pem kubernetes-playbook.yml --aks-vault-pass
+
+Or directly used my roles
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
